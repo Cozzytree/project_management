@@ -1,6 +1,7 @@
 project_client/.env.*
 project_client/.next/*
 server/.env.*
+server/.env
 
 .env.*
 node_modules
