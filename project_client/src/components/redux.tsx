@@ -10,7 +10,7 @@ import {
 import globalReducer from "@/state";
 import { api } from "@/state/api";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
+// import { setupListeners } from "@reduxjs/toolkit/query";
 
 const rootReducer = combineReducers({
    global: globalReducer,

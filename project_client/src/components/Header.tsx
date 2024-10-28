@@ -1,10 +1,12 @@
-type props = {
+import React, { ReactNode } from "react";
+
+type Props = {
    name: string;
-   buttonComponent: any;
+   buttonComponent?: ReactNode; // Change here
    isSmallText: boolean;
 };
 
-export default function Header({ name, buttonComponent, isSmallText }: props) {
+export default function Header({ name, buttonComponent, isSmallText }: Props) {
    return (
       <div className="mb-5 flex w-full items-center justify-between">
          <h1

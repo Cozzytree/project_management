@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/components/redux";
-import { Task, useGetTasksQuery } from "@/state/api";
+import { useGetTasksQuery } from "@/state/api";
 import React, { useMemo, useState } from "react";
 import "gantt-task-react/dist/index.css";
 import { DisplayOption, Gantt, ViewMode } from "gantt-task-react";
@@ -26,13 +26,19 @@ export default function TimeLineView({ id, setModelNewTaskOpen }: props) {
    });
 
    const ganttTasks = useMemo(() => {
-      return taskList?.map((task: Task) => ({
-         start: new Date(task.startDate as string),
-         end: new Date(task.dueDate as string),
-         name: task.title,
-         type: "task" as TaskTypeItems,
-         isDisabled: false,
-      }));
+      return (
+         taskList?.map((task) => ({
+            start: new Date(task.startDate as string),
+            end: new Date(task.dueDate as string),
+            name: task.title,
+            id: `Task-${task.id}`,
+            type: "task" as TaskTypeItems,
+            progress: Number(task.points)
+               ? (Number(task.points) / 10) * 100
+               : 0,
+            isDisabled: false,
+         })) || []
+      );
    }, [taskList]);
 
    const handleViewModeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -48,7 +54,18 @@ export default function TimeLineView({ id, setModelNewTaskOpen }: props) {
    return (
       <div className="px-4 xl:px-6">
          <div className="flex flex-wrap items-center justify-between gap-2 py-3">
-            <Header name="Project Tasks Timeline" isSmallText={false} />
+            <Header
+               name="Project Tasks Timeline"
+               isSmallText={false}
+               buttonComponent={
+                  <button
+                     className="p-2 rounded-md bg-blue-700 text-blue-200"
+                     onClick={() => setModelNewTaskOpen(true)}
+                  >
+                     Add New Task
+                  </button>
+               }
+            />
             <div className="relative inline-block w-64">
                <select
                   className="focus:shadow-outline block w-full appearance-none rounded border border-gray-400 bg-white px-4 py-2 pr-8 leading-tight shadow hover:border-gray-500 focus:outline-none dark:border-dark-secondary dark:bg-dark-secondary dark:text-white"
@@ -64,7 +81,6 @@ export default function TimeLineView({ id, setModelNewTaskOpen }: props) {
          <div className="overflow-hidden rounded-xl text-zinc-800 dark:text-zinc-200">
             <div className="timeline">
                <Gantt
-                  // @ts-ignore
                   tasks={ganttTasks}
                   {...displayOptions}
                   columnWidth={

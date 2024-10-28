@@ -1,4 +1,8 @@
-import { useGetTasksQuery, useUpdateTaskStatusMutation } from "@/state/api";
+import {
+   Status,
+   useGetTasksQuery,
+   useUpdateTaskStatusMutation,
+} from "@/state/api";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Task as TaskType } from "@/state/api";
@@ -35,7 +39,7 @@ export default function BoardView({ setModelNewTaskOpen, id }: props) {
                <TaskColumn
                   key={i}
                   taskList={taskList || []}
-                  status={t}
+                  status={t as Status}
                   moveTask={moveTask}
                   setModelNewTaskOpen={setModelNewTaskOpen}
                />
@@ -46,7 +50,7 @@ export default function BoardView({ setModelNewTaskOpen, id }: props) {
 }
 
 type TaskColumnsType = {
-   status: string;
+   status: Status;
    taskList: TaskType[];
    moveTask: (taskId: number, status: string) => void;
    setModelNewTaskOpen: (v: boolean) => void;
@@ -67,7 +71,9 @@ function TaskColumn({
    }));
    const taskCount = taskList.filter((t) => t.status === status).length;
 
-   const statusColor: any = {
+   // type Status = "To Do" | "Work In Progress" | "Under Review" | "Completed";
+
+   const statusColor: Record<string, string> = {
       "To Do": "#2563EB",
       "Work In Progress": "#059669",
       "Under Review": "#D97706",
@@ -83,7 +89,7 @@ function TaskColumn({
       >
          <div className="mb-1 flex w-full h-12">
             <div
-               style={{ background: statusColor[status] }}
+               style={{ background: statusColor.status }}
                className={`w-3 h-full rounded-s-md`}
             />
             <div className="flex w-full items-center justify-between rounded-e-lg bg-zinc-300 text-zinc-800 dark:text-zinc-200 dark:bg-zinc-700 px-5 py-4">
@@ -137,7 +143,7 @@ const Task = ({ task }: TaskProps) => {
    const formattedDueDate = task.dueDate
       ? format(new Date(task.dueDate), "P")
       : "";
-   const taskComments = (task.comment && task.comment.length) || 0;
+   // const taskComments = (task.comment && task.comment.length) || 0;
 
    const PriorityTag = ({ priority }: { priority: TaskType["priority"] }) => (
       <div
@@ -151,7 +157,7 @@ const Task = ({ task }: TaskProps) => {
          ref={(instance) => {
             drag(instance);
          }}
-         className="mb-4 rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200"
+         className={`${isDragging && "border-2 border-blue-700"} mb-4 rounded-md bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200`}
       >
          {task.attachments && task.attachments.length > 0 && (
             <Image
@@ -208,7 +214,7 @@ const Task = ({ task }: TaskProps) => {
                <div className="flex items-center gap-1">
                   {task.assignee && (
                      <Image
-                        key={task.assignee.id}
+                        key={task.assignee.useId}
                         src={"/logo.png"}
                         alt={task.assignee.username}
                         width={400}
@@ -218,7 +224,7 @@ const Task = ({ task }: TaskProps) => {
                   )}
                   {task.author && (
                      <Image
-                        key={task.author.id}
+                        key={task.author.useId}
                         src={"/logo.png"}
                         alt={task.author.username}
                         width={400}

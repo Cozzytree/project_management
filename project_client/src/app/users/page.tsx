@@ -22,12 +22,12 @@ const CustomGridToolBar = () => {
    );
 };
 
-const columns: GridColDef = [
-   { field: "userId", header: "ID", width: 100 },
-   { field: "username", header: "Username", width: 150 },
+const columns: GridColDef[] = [
+   { field: "userId", headerName: "ID", width: 100 },
+   { field: "username", headerName: "Username", width: 150 },
    {
       field: "profilePictureUrl",
-      header: "Profile Picrore",
+      headerName: "Profile Picrore",
       width: 100,
       renderCell: (params) => {
          return (

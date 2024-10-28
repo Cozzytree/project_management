@@ -3,7 +3,7 @@
 import Header from "@/components/Header";
 import { useAppSelector } from "@/components/redux";
 import { dataGridClassNames, dataGridSxStyles } from "@/libs/utils";
-import { useGetTeamsQuery, useGetUsersQuery } from "@/state/api";
+import { useGetTeamsQuery } from "@/state/api";
 import {
    DataGrid,
    GridColDef,
@@ -11,7 +11,6 @@ import {
    GridToolbarExport,
    GridToolbarFilterButton,
 } from "@mui/x-data-grid";
-import Image from "next/image";
 
 const CustomGridToolBar = () => {
    return (
@@ -22,11 +21,15 @@ const CustomGridToolBar = () => {
    );
 };
 
-const columns: GridColDef = [
-   { field: "id", header: "ID", width: 100 },
-   { field: "teamName", header: "Team Name", width: 150 },
-   { field: "productOwnerUsername", header: "Product Owner", width: 200 },
-   { field: "productManagerUsername", header: "Product Manager", width: 200 },
+const columns: GridColDef[] = [
+   { field: "id", headerName: "ID", width: 100 },
+   { field: "teamName", headerName: "Team Name", width: 150 },
+   { field: "productOwnerUsername", headerName: "Product Owner", width: 200 },
+   {
+      field: "productManagerUsername",
+      headerName: "Product Manager",
+      width: 200,
+   },
 ];
 
 export default function TeamsPage() {

@@ -71,7 +71,7 @@ export default function SearchPage() {
                   )}
                   <div className="grid grid-cols-4">
                      {searchResults?.users?.map((user) => (
-                        <UserCard user={user} key={user.id} />
+                        <UserCard user={user} key={user.useId} />
                      ))}
                   </div>
                </div>
