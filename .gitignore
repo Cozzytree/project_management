@@ -1,0 +1,14 @@
+project_client/.env.*
+project_client/.next/*
+server/.env.*
+
+.env.*
+node_modules
+.next
+dist/*
+
+project_client/node_modules
+server/node_modules
+
+server/dist
+project_client/dist
